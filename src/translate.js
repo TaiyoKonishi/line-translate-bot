@@ -1,4 +1,10 @@
-export async function translateToJapanese(text, apiKey) {
+function isJapanese(text) {
+  return /[\u3040-\u30FF\u4E00-\u9FFF]/.test(text);
+}
+
+export async function translateAuto(text, apiKey) {
+  const targetLang = isJapanese(text) ? "EN" : "JA";
+
   const res = await fetch("https://api-free.deepl.com/v2/translate", {
     method: "POST",
     headers: {
@@ -7,7 +13,7 @@ export async function translateToJapanese(text, apiKey) {
     },
     body: new URLSearchParams({
       text: text,
-      target_lang: "JA"
+      target_lang: targetLang
     })
   });
 
