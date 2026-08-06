@@ -25,7 +25,8 @@ export default {
       const userId = event.source.userId;
 
       const profile = await getGroupMemberProfile(groupId, userId, env.LINE_CHANNEL_ACCESS_TOKEN);
-      if (!profile || profile.displayName !== env.TARGET_DISPLAY_NAME) continue;
+      const targetNames = env.TARGET_DISPLAY_NAME.split(",").map(n => n.trim());
+      if (!profile || !targetNames.includes(profile.displayName)) continue;
 
       try {
         const translated = await translateAuto(event.message.text, env.DEEPL_API_KEY);
