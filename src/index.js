@@ -1,5 +1,5 @@
 import { verifySignature, replyMessage, getGroupMemberProfile } from "./line.js";
-import { translateToJapanese } from "./translate.js";
+import { translateAuto } from "./translate.js";
 
 export default {
   async fetch(request, env) {
@@ -28,7 +28,7 @@ export default {
       if (!profile || profile.displayName !== env.TARGET_DISPLAY_NAME) continue;
 
       try {
-        const translated = await translateToJapanese(event.message.text, env.DEEPL_API_KEY);
+        const translated = await translateAuto(event.message.text, env.DEEPL_API_KEY);
         await replyMessage(event.replyToken, translated, env.LINE_CHANNEL_ACCESS_TOKEN);
       } catch (e) {
         console.error("Translation failed:", e);
